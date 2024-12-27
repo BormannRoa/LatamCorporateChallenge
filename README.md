@@ -64,3 +64,48 @@ resource "azurerm_synapse_workspace" "example" {
   sql_administrator_login = "sqladmin"
   sql_administrator_login_password = "H@Sh1CoR3!"
 }
+
+
+# Parte 2: Aplicaciones y Flujo CI/CD
+
+## Descripción
+
+En esta parte del proyecto, se desarrollará una API HTTP para exponer datos almacenados en una base de datos y se desplegará en la nube mediante un flujo CI/CD. Además, se incluye una opción para la ingesta de datos desde un sistema Pub/Sub y un diagrama de arquitectura que muestra la interacción de los componentes.
+
+## 1. API HTTP
+
+### Descripción
+
+Se levantará un endpoint HTTP que leerá datos de la base de datos y los expondrá al recibir una petición GET.
+
+### Implementación
+
+Usaremos Azure Functions para crear el endpoint HTTP. Aquí tienes un ejemplo básico en Python:
+
+```python
+import logging
+import azure.functions as func
+import pyodbc
+import json
+
+def main(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info('Python HTTP trigger function processed a request.')
+
+    server = 'your_server.database.windows.net'
+    database = 'your_database'
+    username = 'your_username'
+    password = 'your_password'
+    driver= '{ODBC Driver 17 for SQL Server}'
+
+    with pyodbc.connect('DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT * FROM your_table")
+            rows = cursor.fetchall()
+
+    result = [dict(zip([column[0] for column in cursor.description], row)) for row in rows]
+
+    return func.HttpResponse(
+        body=json.dumps(result),
+        mimetype="application/json",
+        status_code=200
+    )
