@@ -229,3 +229,35 @@ Algunas dificultades o limitaciones que podrían surgir a nivel de observabilida
 La complejidad de recopilar y analizar métricas de 50 sistemas similares.
 La necesidad de configurar y mantener la herramienta de visualización (Grafana) para que se adapte a los cambios en el sistema.
 La posibilidad de que los sistemas no estén configurados de manera homogénea, lo que podría afectar la precisión de las métricas y la visualización.
+
+###Parte 5: Alertas y SRE (Opcional)
+
+1. Reglas y umbrales para alertas
+
+Para definir reglas y umbrales para las métricas propuestas, utilizaría los siguientes umbrales:
+
+Request latency: Si el request latency promedio supera los 500ms durante más de 5 minutos, se disparará una alerta.
+Error rate: Si el error rate supera el 5% durante más de 10 minutos, se disparará una alerta.
+Data ingestion rate: Si la data ingestion rate disminuye en más del 20% durante más de 30 minutos, se disparará una alerta.
+Estos umbrales están basados en la experiencia y en la comprensión de los requisitos del sistema. El objetivo es detectar problemas de rendimiento y estabilidad en el sistema antes de que afecten negativamente a los usuarios.
+
+##Argumentación
+
+La elección de estos umbrales se basa en la comprensión de los requisitos del sistema y en la experiencia en la gestión de sistemas similares. El request latency de 500ms es un umbral razonable para considerar que el sistema está experimentando problemas de rendimiento. El error rate del 5% es un umbral razonable para considerar que el sistema está experimentando problemas de estabilidad. La data ingestion rate es un indicador importante para detectar problemas de capacidad en el sistema.
+
+##2. Métricas SLIs y SLOs
+
+Para definir métricas SLIs y SLOs para los servicios del sistema, utilizaría las siguientes métricas:
+
+Service A: Request latency < 200ms, Error rate < 1%, Data ingestion rate > 1000 records/min.
+Service B: Request latency < 300ms, Error rate < 2%, Data ingestion rate > 500 records/min.
+Service C: Request latency < 400ms, Error rate < 3%, Data ingestion rate > 200 records/min.
+Estos SLIs y SLOs están basados en la comprensión de los requisitos del sistema y en la experiencia en la gestión de sistemas similares. El objetivo es definir métricas que midan el rendimiento y estabilidad de cada servicio y que sean razonables para considerar que el servicio está funcionando correctamente.
+
+##Argumentación
+
+La elección de estos SLIs y SLOs se basa en la comprensión de los requisitos del sistema y en la experiencia en la gestión de sistemas similares. Los SLIs y SLOs están diseñados para medir el rendimiento y estabilidad de cada servicio y para detectar problemas de rendimiento y estabilidad en el sistema. Los umbrales están basados en la experiencia y en la comprensión de los requisitos del sistema.
+
+##Desecharia
+
+No utilizaría métricas como el uso de recursos (CPU, RAM, DISK USAGE) como SLIs, ya que no son indicadores directos de la performance y estabilidad del sistema. En su lugar, utilizaría métricas que midan directamente el rendimiento y estabilidad del sistema, como el request latency, error rate y data ingestion rate.
