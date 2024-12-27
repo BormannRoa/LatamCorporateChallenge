@@ -169,6 +169,7 @@ jobs:
         app-name: 'your-function-app-name'
         package: '.'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+
 3. Identificar posibles puntos críticos del sistema (a nivel de fallo o performance) diferentes al punto anterior y proponer formas de testearlos o medirlos (no implementar)
 Puntos Críticos:
 
@@ -185,3 +186,46 @@ Caching: Implementar un sistema de caché (por ejemplo, Azure Cache for Redis) p
 Redundancia y Failover: Configurar redundancia y mecanismos de failover para Azure Event Hubs y Azure Functions para asegurar la alta disponibilidad del sistema.
 Autoescalado: Configurar políticas de autoescalado en Azure para manejar incrementos en la carga de trabajo sin degradación del rendimiento.
 Monitoreo y Alertas: Implementar un sistema robusto de monitoreo y alertas utilizando Azure Monitor y Application Insights para detectar y responder rápidamente a problemas de rendimiento y disponibilidad.
+
+###Parte 4: Métricas y Monitoreo
+
+#1. Métricas críticas
+
+Además de las métricas básicas CPU/RAM/DISK USAGE, propongo las siguientes tres métricas críticas para entender la salud y rendimiento del sistema end-to-end:
+
+Request latency: Tiempo promedio que tarda en procesar una solicitud desde que se recibe hasta que se devuelve la respuesta.
+Error rate: Porcentaje de solicitudes que fallan y no se pueden procesar correctamente.
+Data ingestion rate: Velocidad a la que se ingieren nuevos datos en el sistema, medida en términos de cantidad de datos por unidad de tiempo.
+Estas métricas nos permiten entender cómo se está comportando el sistema en términos de rendimiento, estabilidad y capacidad para manejar el volumen de datos.
+
+#2. Herramienta de visualización
+
+La herramienta de visualización que propongo es Grafana, una plataforma de visualización de datos que nos permite crear dashboards personalizados para monitorear y analizar nuestros sistemas.
+
+En Grafana, mostraría las siguientes métricas:
+
+Una gráfica de línea que muestre el request latency en función del tiempo.
+Un gráfico de barras que muestre el error rate en función del tiempo.
+Un gráfico de área que muestre la data ingestion rate en función del tiempo.
+Con esta información, podríamos entender la salud del sistema y tomar decisiones estratégicas para mejorar su rendimiento y estabilidad.
+
+#3. Implementación en la nube
+
+La implementación de Grafana en la nube se realizaría mediante un servicio de Azure Monitor, que nos permite recopilar y analizar métricas de nuestros sistemas en la nube. Grafana se configuraría para conectarse a Azure Monitor y recopilar las métricas críticas mencionadas anteriormente.
+
+#4. Escalamiento a 50 sistemas similares
+
+Si escalamos la solución a 50 sistemas similares, la visualización de Grafana cambiaría en varios aspectos:
+
+La gráfica de línea que muestra el request latency se convertiría en una gráfica de área que muestre la media móvil del request latency en función del tiempo.
+El gráfico de barras que muestra el error rate se convertiría en un gráfico de barras que muestre la media móvil del error rate en función del tiempo.
+El gráfico de área que muestra la data ingestion rate se convertiría en un gráfico de área que muestre la media móvil de la data ingestion rate en función del tiempo.
+Además, podríamos agregar nuevas métricas para monitorear el rendimiento y estabilidad de los 50 sistemas similares, como la media móvil del uso de recursos (CPU, RAM, DISK USAGE) y la tasa de fallos de los sistemas.
+
+#5. Dificultades o limitaciones
+
+Algunas dificultades o limitaciones que podrían surgir a nivel de observabilidad de los sistemas de no abordarse correctamente el problema de escalabilidad son:
+
+La complejidad de recopilar y analizar métricas de 50 sistemas similares.
+La necesidad de configurar y mantener la herramienta de visualización (Grafana) para que se adapte a los cambios en el sistema.
+La posibilidad de que los sistemas no estén configurados de manera homogénea, lo que podría afectar la precisión de las métricas y la visualización.
