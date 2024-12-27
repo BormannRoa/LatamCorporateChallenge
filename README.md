@@ -258,6 +258,6 @@ Estos SLIs y SLOs están basados en la comprensión de los requisitos del sistem
 
 La elección de estos SLIs y SLOs se basa en la comprensión de los requisitos del sistema y en la experiencia en la gestión de sistemas similares. Los SLIs y SLOs están diseñados para medir el rendimiento y estabilidad de cada servicio y para detectar problemas de rendimiento y estabilidad en el sistema. Los umbrales están basados en la experiencia y en la comprensión de los requisitos del sistema.
 
-##Desecharia
+## No utilizaria (Desecharia)
 
 No utilizaría métricas como el uso de recursos (CPU, RAM, DISK USAGE) como SLIs, ya que no son indicadores directos de la performance y estabilidad del sistema. En su lugar, utilizaría métricas que midan directamente el rendimiento y estabilidad del sistema, como el request latency, error rate y data ingestion rate.
