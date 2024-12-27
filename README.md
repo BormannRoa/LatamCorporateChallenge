@@ -109,3 +109,79 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         mimetype="application/json",
         status_code=200
     )
+# Parte 3: Pruebas de Integración y Puntos Críticos de Calidad
+
+## Descripción
+
+En esta parte del proyecto, se implementarán pruebas de integración para verificar que la API está exponiendo los datos correctamente, se propondrán otras pruebas de integración, se identificarán posibles puntos críticos del sistema y se propondrán formas de robustecer el sistema.
+
+## 1. Test de Integración en el Flujo CI/CD
+
+### Descripción
+
+Se implementará un test de integración en el flujo CI/CD para verificar que la API efectivamente está exponiendo los datos de la base de datos.
+
+### Implementación
+
+**Flujo CI/CD en GitHub Actions:**
+
+```yaml
+name: Test and Deploy Azure Function
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run integration tests
+      run: |
+        pytest tests/integration_test.py
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to Azure Functions
+      uses: Azure/functions-action@v1
+      with:
+        app-name: 'your-function-app-name'
+        package: '.'
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+3. Identificar posibles puntos críticos del sistema (a nivel de fallo o performance) diferentes al punto anterior y proponer formas de testearlos o medirlos (no implementar)
+Puntos Críticos:
+
+Latencia de la Base de Datos: La latencia en las consultas a la base de datos puede afectar el rendimiento de la API.
+Disponibilidad del Servicio: Fallos en Azure Event Hubs o Azure Functions pueden interrumpir el flujo de datos.
+Formas de Testear o Medir:
+
+Latencia de la Base de Datos: Usar herramientas de monitoreo como Azure Monitor para medir la latencia de las consultas y establecer alertas si superan un umbral definido.
+Disponibilidad del Servicio: Implementar pruebas de disponibilidad que verifiquen periódicamente el estado de los servicios críticos y alerten en caso de fallos.
+4. Proponer cómo robustecer técnicamente el sistema para compensar o solucionar dichos puntos críticos
+Propuestas para Robustecer el Sistema:
+
+Caching: Implementar un sistema de caché (por ejemplo, Azure Cache for Redis) para reducir la carga en la base de datos y mejorar la latencia de las respuestas.
+Redundancia y Failover: Configurar redundancia y mecanismos de failover para Azure Event Hubs y Azure Functions para asegurar la alta disponibilidad del sistema.
+Autoescalado: Configurar políticas de autoescalado en Azure para manejar incrementos en la carga de trabajo sin degradación del rendimiento.
+Monitoreo y Alertas: Implementar un sistema robusto de monitoreo y alertas utilizando Azure Monitor y Application Insights para detectar y responder rápidamente a problemas de rendimiento y disponibilidad.
